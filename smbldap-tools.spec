@@ -10,6 +10,7 @@ Source0:	http://samba.idealx.org/dist/%{name}-%{version}.tgz
 # Source0-md5:	bb5213ee265e9c301796af77a1894001
 Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-smbldap_tools.pm.patch
+Requires:	openldap
 Requires:	perl-Crypt-SmbHash
 Requires:	perl-ldap
 Requires:	samba
