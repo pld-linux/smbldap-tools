@@ -9,8 +9,10 @@ URL:		http://samba.IDEALX.org/
 Source0:	http://samba.idealx.org/dist/%{name}-%{version}.tgz
 # Source0-md5:	bb5213ee265e9c301796af77a1894001
 Patch0:		%{name}-Makefile.patch
-Requires:	perl-ldap
+Patch1:		%{name}-smbldap_tools.pm.patch
 Requires:	perl-Crypt-SmbHash
+Requires:	perl-ldap
+Requires:	samba
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -29,6 +31,7 @@ has³ami.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 
