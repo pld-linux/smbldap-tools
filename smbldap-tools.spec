@@ -7,8 +7,10 @@ Group:		Applications/Networking
 License:	GPL
 URL:		http://samba.IDEALX.org/
 Source0:	http://samba.idealx.org/dist/%{name}-%{version}.tgz
-Patch0:		%{name}-Makefile.patch
 # Source0-md5:	bb5213ee265e9c301796af77a1894001
+Patch0:		%{name}-Makefile.patch
+Requires:	perl-ldap
+Requires:	perl-Crypt-SmbHash
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
