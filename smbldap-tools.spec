@@ -56,6 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc CONTRIBUTORS COPYING ChangeLog FILES INFRA README INSTALL TODO
 %doc smb.conf smbldap.conf smbldap_bind.conf configure.pl doc/html doc/smbldap*
+%dir %{_sysconfdir}/smbldap-tools
 %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap.conf
 %{perl_vendorarch}/%{_name}.pm
 %attr(600,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap_bind.conf
