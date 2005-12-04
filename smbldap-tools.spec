@@ -11,9 +11,9 @@ Source0:	http://samba.idealx.org/dist/%{name}-%{version}.tgz
 # Source0-md5:	12ddaf6393420ee24c4af94152e9ee2e
 Patch0:		%{name}-Makefile.patch
 Requires:	openldap
-Requires:	perl-IO-Socket-SSL
 Requires:	perl-Crypt-SmbHash
 Requires:	perl-Digest-SHA1
+Requires:	perl-IO-Socket-SSL
 Requires:	perl-ldap
 Requires:	samba
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -57,7 +57,7 @@ rm -rf $RPM_BUILD_ROOT
 %doc CONTRIBUTORS COPYING ChangeLog FILES INFRA README INSTALL TODO
 %doc smb.conf smbldap.conf smbldap_bind.conf configure.pl doc/html doc/smbldap*
 %dir %{_sysconfdir}/smbldap-tools
-%verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap.conf
+%verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap.conf
 %{perl_vendorarch}/%{_name}.pm
-%attr(600,root,root) %verify(not md5 size mtime) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap_bind.conf
+%attr(600,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap_bind.conf
 %attr(755,root,root) %{_sbindir}/*
