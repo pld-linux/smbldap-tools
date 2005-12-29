@@ -3,7 +3,7 @@ Summary(pl):	Narzêdzia do administracji u¿ytkownikami i grupami dla Samby i Open
 Name:		smbldap-tools
 %define		_name	smbldap_tools
 Version:	0.9.1
-Release:	1
+Release:	2
 Group:		Applications/Networking
 License:	GPL
 URL:		http://samba.IDEALX.org/
@@ -34,8 +34,6 @@ has³ami.
 %prep
 %setup -q
 %patch0 -p1
-
-%build
 
 %install
 rm -rf $RPM_BUILD_ROOT
