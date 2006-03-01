@@ -8,13 +8,14 @@ Summary:	User & Group administration tools for Samba-OpenLDAP
 Summary(pl):	Narzêdzia do administracji u¿ytkownikami i grupami dla Samby i OpenLDAP
 Name:		smbldap-tools
 Version:	0.9.1
-Release:	3
+Release:	4
 License:	GPL
 Group:		Applications/Networking
 URL:		http://samba.idealx.org/
 Source0:	http://samba.idealx.org/dist/%{name}-%{version}.tgz
 # Source0-md5:	12ddaf6393420ee24c4af94152e9ee2e
 Patch0:		%{name}-Makefile.patch
+Patch1:		%{name}-configure.patch
 BuildRequires:	rpm-perlprov >= 4.1-13
 %if %{with autodeps}
 BuildRequires:	perl-Crypt-SmbHash
@@ -42,6 +43,7 @@ has³ami.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -54,6 +56,7 @@ rm -rf $RPM_BUILD_ROOT
 rm -f  $RPM_BUILD_ROOT%{_sbindir}/%{name}.spec
 install -d $RPM_BUILD_ROOT%{perl_vendorlib}
 mv -f $RPM_BUILD_ROOT%{_sbindir}/%{_name}.pm $RPM_BUILD_ROOT%{perl_vendorlib}
+install configure.pl $RPM_BUILD_ROOT%{_sbindir}/smbldap-configure
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -61,7 +64,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CONTRIBUTORS COPYING ChangeLog FILES INFRA README INSTALL TODO
-%doc smb.conf smbldap.conf smbldap_bind.conf configure.pl doc/html doc/smbldap*
+%doc smb.conf smbldap.conf smbldap_bind.conf doc/html doc/smbldap*
 %dir %{_sysconfdir}/smbldap-tools
 %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap.conf
 %{perl_vendorlib}/%{_name}.pm
