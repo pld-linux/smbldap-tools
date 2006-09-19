@@ -8,11 +8,11 @@ Summary:	User & Group administration tools for Samba-OpenLDAP
 Summary(pl):	Narzêdzia do administracji u¿ytkownikami i grupami dla Samby i OpenLDAP
 Name:		smbldap-tools
 Version:	0.9.2
-Release:	1.1
+Release:	2
 License:	GPL
 Group:		Applications/Networking
-URL:		http://samba.idealx.org/
-Source0:	http://www.idealx.com/downloads/%{name}-%{version}.tgz
+URL:		http://sourceforge.net/projects/smbldap-tools
+Source0:	http://dl.sourceforge.net/smbldap-tools/%{name}-%{version}a.tgz
 # Source0-md5:	bb8eb44adb4e7946de5b486acf480c24
 Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-configure.patch
