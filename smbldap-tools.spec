@@ -5,7 +5,7 @@
 %define		_name	smbldap_tools
 %include	/usr/lib/rpm/macros.perl
 Summary:	User & Group administration tools for Samba-OpenLDAP
-Summary(pl.UTF-8):   Narzędzia do administracji użytkownikami i grupami dla Samby i OpenLDAP
+Summary(pl.UTF-8):	Narzędzia do administracji użytkownikami i grupami dla Samby i OpenLDAP
 Name:		smbldap-tools
 Version:	0.9.2
 Release:	2
