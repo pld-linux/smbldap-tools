@@ -5,7 +5,7 @@
 %define		_name	smbldap_tools
 %include	/usr/lib/rpm/macros.perl
 Summary:	User & Group administration tools for Samba-OpenLDAP
-Summary(pl):	Narzêdzia do administracji u¿ytkownikami i grupami dla Samby i OpenLDAP
+Summary(pl.UTF-8):   NarzÄ™dzia do administracji uÅ¼ytkownikami i grupami dla Samby i OpenLDAP
 Name:		smbldap-tools
 Version:	0.9.2
 Release:	2
@@ -34,12 +34,12 @@ useful to add, modify and delete users and groups, and to change Unix
 and Samba passwords. In those context they replace the system tools to
 manage users, groups and passwords.
 
-%description -l pl
-W po³±czeniu z OpenLDAP i serwerami Samba-LDAP ten zestaw narzêdzi
-jest u¿yteczny przy dodawaniu, modyfikowaniu i usuwaniu u¿ytkowników i
-grup oraz zmianie hase³ w Uniksie i Sambie. W tym zastosowaniu mog±
-zast±piæ narzêdzia systemowe do zarz±dzania u¿ytkownikami, grupami i
-has³ami.
+%description -l pl.UTF-8
+W poÅ‚Ä…czeniu z OpenLDAP i serwerami Samba-LDAP ten zestaw narzÄ™dzi
+jest uÅ¼yteczny przy dodawaniu, modyfikowaniu i usuwaniu uÅ¼ytkownikÃ³w i
+grup oraz zmianie haseÅ‚ w Uniksie i Sambie. W tym zastosowaniu mogÄ…
+zastÄ…piÄ‡ narzÄ™dzia systemowe do zarzÄ…dzania uÅ¼ytkownikami, grupami i
+hasÅ‚ami.
 
 %prep
 %setup -q
