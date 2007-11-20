@@ -60,15 +60,13 @@ install -d $RPM_BUILD_ROOT%{perl_vendorlib}
 mv -f $RPM_BUILD_ROOT%{_sbindir}/%{_name}.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install configure.pl $RPM_BUILD_ROOT%{_sbindir}/smbldap-configure
 
-install doc/migration_scripts/smbldap-migrate-* $RPM_BUILD_ROOT%{_sbindir}
-
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
 %doc CONTRIBUTORS ChangeLog FILES INFRA README INSTALL TODO
-%doc doc/smb.conf smbldap.conf smbldap_bind.conf doc/smbldap*
+%doc doc/smb.conf smbldap.conf smbldap_bind.conf doc/smbldap* doc/migration_scripts/smbldap-migrate-*
 %dir %{_sysconfdir}/smbldap-tools
 %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap.conf
 %{perl_vendorlib}/%{_name}.pm
