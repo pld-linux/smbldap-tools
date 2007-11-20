@@ -1,76 +1,66 @@
 --- smbldap-tools-0.9.2/smbldap-usermod~	2006-01-03 12:57:41.000000000 +0200
 +++ smbldap-tools-0.9.2/smbldap-usermod	2006-08-03 19:52:16.913071888 +0300
-@@ -34,7 +34,6 @@
+@@ -134,22 +133,12 @@
  
- use Getopt::Std;
- my %Options;
--my $nscd_status;
- 
- my $ok = getopts('A:B:C:D:E:F:H:IJM:N:S:PT:ame:f:u:g:G:d:l:r:s:c:ok:?h', \%Options);
- if ( (!$ok) || (@ARGV < 1) || ($Options{'?'}) || ($Options{'h'}) ) {
-@@ -134,24 +133,12 @@
- my $_userRid;
  if (defined($tmp = $Options{'u'})) {
-   if (defined($Options{'o'})) {
--    $nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
--	
--    if ($nscd_status == 0) {
--      system "/etc/init.d/nscd stop > /dev/null 2>&1";
--    }
-+    system "/usr/sbin/nscd -i passwd" if -x "/usr/sbin/nscd";
+     if (!defined($Options{'o'})) {
+-	$nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
+-	if ($nscd_status == 0) {
+-	    system "/etc/init.d/nscd stop > /dev/null 2>&1";
+-	}
++	system "/usr/sbin/nscd -i passwd" if -x "/usr/sbin/nscd";
  
-     if (getpwuid($tmp)) {
--      if ($nscd_status == 0) {
--	system "/etc/init.d/nscd start > /dev/null 2>&1";
--      }
+ 	if (getpwuid($tmp)) {
+-	    if ($nscd_status == 0) {
+-		system "/etc/init.d/nscd start > /dev/null 2>&1";
+-	    }
 -
-       print "$0: uid number $tmp exists\n";
-       exit (6);
+ 	    print "$0: uid number $tmp exists\n";
+ 	    exit (6);
+ 	}
+-	if ($nscd_status == 0) {
+-	    system "/etc/init.d/nscd start > /dev/null 2>&1";
+-	}
      }
--    if ($nscd_status == 0) {
--      system "/etc/init.d/nscd start > /dev/null 2>&1";
--    }
--
-   }
-   push(@mods, 'uidNumber', $tmp);
-   $_userUidNumber = $tmp;
+ 
+     push(@mods, 'uidNumber', $tmp);
 @@ -529,11 +516,7 @@
-   $ldap_master->unbind;
+     $ldap_master->unbind;
  }
  
 -$nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
 -
 -if ($nscd_status == 0) {
--  system "/etc/init.d/nscd restart > /dev/null 2>&1";
+-    system "/etc/init.d/nscd restart > /dev/null 2>&1";
 -}
 +system "/usr/sbin/nscd -i passwd" if -x "/usr/sbin/nscd";
  
  if (defined($Options{'P'})) {
-   exec "$RealBin/smbldap-passwd $user"
+     exec "$RealBin/smbldap-passwd $user"
 --- smbldap-tools-0.9.2/smbldap_tools.pm~	2006-01-03 12:57:41.000000000 +0200
 +++ smbldap-tools-0.9.2/smbldap_tools.pm	2006-08-03 19:53:47.965109611 +0300
 @@ -693,10 +693,7 @@
  sub group_add
-   {
- 	my ($gname, $gid, $force) = @_;
--	my $nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
--	if ($nscd_status == 0) {
--	  system "/etc/init.d/nscd stop > /dev/null 2>&1";
--	}
-+	system "/usr/sbin/nscd -i group" if -x "/usr/sbin/nscd";
- 	if (!defined($gid)) {
- 	  #while (defined(getgrgid($config{GID_START}))) {
- 	  #	$config{GID_START}++;
+ {
+     my ($gname, $gid, $force) = @_;
+-    my $nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
+-    if ($nscd_status == 0) {
+-	system "/etc/init.d/nscd stop > /dev/null 2>&1";
+-    }
++    system "/usr/sbin/nscd -i group" if -x "/usr/sbin/nscd";
+     if (!defined($gid)) {
+ 	#while (defined(getgrgid($config{GID_START}))) {
+ 	#	$config{GID_START}++;
 @@ -710,9 +707,6 @@
- 		}
- 	  }
+ 	    }
  	}
--	if ($nscd_status == 0) {
--	  system "/etc/init.d/nscd start > /dev/null 2>&1";
--	}
- 	my $modify = $ldap->add ( "cn=$gname,$config{groupsdn}",
- 									 attrs => [
- 											   objectClass => [ 'top', 'posixGroup' ],
+     }
+-    if ($nscd_status == 0) {
+-	system "/etc/init.d/nscd start > /dev/null 2>&1";
+-    }
+     my $modify = $ldap->add ( "cn=$gname,$config{groupsdn}",
+ 			      attrs => [
+ 					objectClass => [ 'top', 'posixGroup' ],
 --- smbldap-tools-0.9.2/smbldap-useradd~	2006-01-03 12:57:41.000000000 +0200
 +++ smbldap-tools-0.9.2/smbldap-useradd	2006-08-03 19:56:17.748461827 +0300
 @@ -75,16 +75,6 @@
@@ -83,7 +73,7 @@
 -my $nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
 -
 -if ($nscd_status == 0) {
--  system "/etc/init.d/nscd stop > /dev/null 2>&1";
+-    system "/etc/init.d/nscd stop > /dev/null 2>&1";
 -}
 -
 -
@@ -91,7 +81,7 @@
  my $userName = $ARGV[0];
  
 @@ -103,6 +93,8 @@
-   exit (1);
+     exit (1);
  }
  
 +system "/usr/sbin/nscd -i passwd" if -x "/usr/sbin/nscd";
@@ -100,11 +90,11 @@
  my ($rc, $dn) = get_user_dn2($userName);
  if ($rc and defined($dn)) {
 @@ -152,10 +144,6 @@
-   die "Uid already exists.\n";
+     die "Uid already exists.\n";
  }
  
 -if ($nscd_status == 0) {
--  system "/etc/init.d/nscd start > /dev/null 2>&1";
+-    system "/etc/init.d/nscd start > /dev/null 2>&1";
 -}
 -
  my $createGroup = 0;
@@ -119,7 +109,7 @@
 -my $nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
 -
 -if ($nscd_status == 0) {
--  system "/etc/init.d/nscd restart > /dev/null 2>&1";
+-    system "/etc/init.d/nscd restart > /dev/null 2>&1";
 -}
 -
 +system "/usr/sbin/nscd -i passwd" if -x "/usr/sbin/nscd";
@@ -135,7 +125,7 @@
 -my $nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
 -
 -if ($nscd_status == 0) {
--  system "/etc/init.d/nscd restart > /dev/null 2>&1";
+-    system "/etc/init.d/nscd restart > /dev/null 2>&1";
 -}
 +system "/usr/sbin/nscd -i group" if -x "/usr/sbin/nscd";
  
@@ -148,7 +138,7 @@
 -$nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
 -
 -if ($nscd_status == 0) {
--  system "/etc/init.d/nscd restart > /dev/null 2>&1";
+-    system "/etc/init.d/nscd restart > /dev/null 2>&1";
 -}
 -
  # take down session
@@ -163,7 +153,7 @@
 -my $nscd_status = system "/etc/init.d/nscd status >/dev/null 2>&1";
 -
 -if ($nscd_status == 0) {
--  system "/etc/init.d/nscd restart > /dev/null 2>&1";
+-    system "/etc/init.d/nscd restart > /dev/null 2>&1";
 -}
 +system "/usr/sbin/nscd -i group" if -x "/usr/sbin/nscd";
  
