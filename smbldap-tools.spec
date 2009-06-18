@@ -7,13 +7,15 @@
 Summary:	User & Group administration tools for Samba-OpenLDAP
 Summary(pl.UTF-8):	Narzędzia do administracji użytkownikami i grupami dla Samby i OpenLDAP
 Name:		smbldap-tools
-Version:	0.9.5
-Release:	1
+Version:	0.9.6
+# Despite name-ver file this is REALLY a pre1 release
+Release:	0.pre1.1
 License:	GPL
 Group:		Applications/Networking
 URL:		https://gna.org/projects/smbldap-tools/
-Source0:	http://download.gna.org/smbldap-tools/packages/pre-release/%{name}-%{version}.tgz
-# Source0-md5:	88e4eb8c056d30fa641760f6c95634e8
+#Source0:	http://download.gna.org/smbldap-tools/packages/pre-release/%{name}-%{version}.tgz
+Source0:	http://www.iallanis.info/smbldap-tools/development_release/%{name}-%{version}.tgz
+# Source0-md5:	250e51102fe8731dfcb32d4da29c02d7
 Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-configure.patch
 Patch2:		%{name}-nscd.patch
