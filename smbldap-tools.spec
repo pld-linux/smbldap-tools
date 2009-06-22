@@ -9,7 +9,7 @@ Summary(pl.UTF-8):	Narzędzia do administracji użytkownikami i grupami dla Samb
 Name:		smbldap-tools
 Version:	0.9.6
 # Despite name-ver file this is REALLY a pre1 release
-Release:	0.pre1.1
+Release:	0.pre1.2
 License:	GPL
 Group:		Applications/Networking
 URL:		https://gna.org/projects/smbldap-tools/
@@ -19,6 +19,7 @@ Source0:	http://www.iallanis.info/smbldap-tools/development_release/%{name}-%{ve
 Patch0:		%{name}-Makefile.patch
 Patch1:		%{name}-configure.patch
 Patch2:		%{name}-nscd.patch
+Patch3:		%{name}-krb5.patch
 BuildRequires:	rpm-perlprov >= 4.1-13
 %if %{with autodeps}
 BuildRequires:	perl-Crypt-SmbHash
@@ -48,6 +49,7 @@ hasłami.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
