@@ -61,10 +61,11 @@ rm -rf $RPM_BUILD_ROOT
 	sysconfdir=%{_sysconfdir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
-rm -f  $RPM_BUILD_ROOT%{_sbindir}/%{name}.spec
 install -d $RPM_BUILD_ROOT%{perl_vendorlib}
 mv -f $RPM_BUILD_ROOT%{_sbindir}/%{_name}.pm $RPM_BUILD_ROOT%{perl_vendorlib}
 install configure.pl $RPM_BUILD_ROOT%{_sbindir}/smbldap-configure
+
+rm -f $RPM_BUILD_ROOT%{_sbindir}/*.{orig,spec}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -75,6 +76,6 @@ rm -rf $RPM_BUILD_ROOT
 %doc doc/smb.conf smbldap.conf smbldap_bind.conf doc/smbldap* doc/migration_scripts/smbldap-migrate-*
 %dir %{_sysconfdir}/smbldap-tools
 %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap.conf
-%{perl_vendorlib}/%{_name}.pm
 %attr(600,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap_bind.conf
 %attr(755,root,root) %{_sbindir}/*
+%{perl_vendorlib}/%{_name}.pm
