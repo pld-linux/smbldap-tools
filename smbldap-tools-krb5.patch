@@ -16,11 +16,41 @@ diff -ur smbldap-tools-0.9.6/smbldap.conf smbldap-tools-0.9.6-krb5/smbldap.conf
  # SMBLDAP-TOOLS Configuration (default are ok for a RedHat)
  #
  ##############################################################################
-Only in smbldap-tools-0.9.6-krb5: smbldap.conf~
 diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-useradd
 --- smbldap-tools-0.9.6/smbldap-useradd	2009-06-22 16:19:38.853899020 +0200
 +++ smbldap-tools-0.9.6-krb5/smbldap-useradd	2009-06-22 16:37:34.637118213 +0200
-@@ -547,21 +547,44 @@
+@@ -384,6 +384,12 @@
+ # add posix account first
+ my $add;
+ 
++my $userPass;
++if ($config{hash_encrypt} eq "K5KEY" )) {
++	$userPass = "{K5KEY}";
++} else {
++	$userPass = "{crypt}x";
++}
+ # if AIX account, inetOrgPerson obectclass can't be used
+ if ( defined( $Options{'b'} ) ) {
+     $add = $ldap_master->add(
+@@ -402,7 +408,7 @@
+             'homeDirectory' => "$userHomeDirectory",
+             'loginShell'    => "$config{userLoginShell}",
+             'gecos'         => "$config{userGecos}",
+-            'userPassword'  => "{crypt}x"
++            'userPassword'  => "$userPass"
+         ]
+     );
+ }
+@@ -424,7 +430,7 @@
+             'homeDirectory' => "$userHomeDirectory",
+             'loginShell'    => "$config{userLoginShell}",
+             'gecos'         => "$config{userGecos}",
+-            'userPassword'  => "{crypt}x"
++            'userPassword'  => "$userPass"
+         ]
+     );
+ }
+@@ -547,21 +547,47 @@
              $valacctflags = "$tmp";
          }
  
@@ -57,7 +87,10 @@ diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-us
 +			add => [ objectClass        => 'krb5Principal' ],
 +			add => [ objectClass        => 'krb5KDCEntry' ],
 +			add => [ krb5PrincipalName  => "$userName\@$config{KERBEROS_REALM}" ],
-+			add => [ krb5KeyVersionNumber => '0' ]
++			add => [ krb5KeyVersionNumber => '0' ],
++			add => [ krb5KDCFlags       => '126'],
++			add => [ krb5MaxRenew       => '604800'],
++			add => [ krb5MaxLife        => '86400']
 +		    ]
 +		);
 +	} else {
@@ -80,3 +113,16 @@ diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-us
  
          $modify->code && die "failed to add entry: ", $modify->error;
  
+--- smbldap-tools-0.9.6/smbldap-passwd.orig	2009-06-25 22:40:05.764901892 +0200
++++ smbldap-tools-0.9.6/smbldap-passwd	2009-06-25 22:49:03.906899121 +0200
+@@ -77,6 +77,10 @@
+     }
+ }
+ 
++if ($config{hash_encrypt} eq "K5KEY" )) {
++    die "Refusing to mess with Kerberos passwords/keys,\nuse smbpasswd, kpasswd or pam passwd\n";
++}
++
+ if (!defined($user)) {
+     $user = getpwuid($<);		# $user=$ENV{"USER"};
+ }

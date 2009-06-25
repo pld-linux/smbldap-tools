@@ -9,7 +9,7 @@ Summary(pl.UTF-8):	Narzędzia do administracji użytkownikami i grupami dla Samb
 Name:		smbldap-tools
 Version:	0.9.6
 # Despite name-ver file this is REALLY a pre1 release
-Release:	0.pre1.3
+Release:	0.pre1.4
 License:	GPL
 Group:		Applications/Networking
 URL:		https://gna.org/projects/smbldap-tools/
