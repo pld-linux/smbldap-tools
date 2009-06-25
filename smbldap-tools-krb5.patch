@@ -20,7 +20,7 @@ Only in smbldap-tools-0.9.6-krb5: smbldap.conf~
 diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-useradd
 --- smbldap-tools-0.9.6/smbldap-useradd	2009-06-22 16:19:38.853899020 +0200
 +++ smbldap-tools-0.9.6-krb5/smbldap-useradd	2009-06-22 16:37:34.637118213 +0200
-@@ -547,21 +547,43 @@
+@@ -547,21 +547,44 @@
              $valacctflags = "$tmp";
          }
  
@@ -39,8 +39,9 @@ diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-us
 -                add => [ sambaSID           => "$config{SID}-$userRid" ]
 -            ]
 -        );
-+	if ( defined( $KERBEROS_REALM ) ) {
-+		my $modify = $ldap_master->modify(
++	my $modify;
++	if ( defined( $config{KERBEROS_REALM} ) ) {
++		$modify = $ldap_master->modify(
 +		    "uid=$userName,$config{usersdn}",
 +		    changes => [
 +			add => [ objectClass        => 'sambaSAMAccount' ],
@@ -55,12 +56,12 @@ diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-us
 +			add => [ sambaSID           => "$config{SID}-$userRid" ],
 +			add => [ objectClass        => 'krb5Principal' ],
 +			add => [ objectClass        => 'krb5KDCEntry' ],
-+			add => [ krb5PrincipalName  => "$userName\@$KERBEROS_REALM" ],
++			add => [ krb5PrincipalName  => "$userName\@$config{KERBEROS_REALM}" ],
 +			add => [ krb5KeyVersionNumber => '0' ]
 +		    ]
 +		);
 +	} else {
-+		my $modify = $ldap_master->modify(
++		$modify = $ldap_master->modify(
 +		    "uid=$userName,$config{usersdn}",
 +		    changes => [
 +			add => [ objectClass        => 'sambaSAMAccount' ],
