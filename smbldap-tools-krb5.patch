@@ -24,7 +24,7 @@ diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-us
  my $add;
  
 +my $userPass;
-+if ($config{hash_encrypt} eq "K5KEY" )) {
++if ( $config{hash_encrypt} eq "K5KEY" ) {
 +	$userPass = "{K5KEY}";
 +} else {
 +	$userPass = "{crypt}x";
