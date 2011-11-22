@@ -14,11 +14,9 @@ Group:		Applications/Networking
 Source0:	http://download.gna.org/smbldap-tools/sources/0.9.7/%{name}-%{version}.tar.gz
 # Source0-md5:	d9f169a77b527672778e4307091bec36
 URL:		https://gna.org/projects/smbldap-tools/
-Patch0:		%{name}-Makefile.patch
-Patch1:		%{name}-configure.patch
-Patch2:		%{name}-nscd.patch
-Patch3:		%{name}-krb5.patch
-Patch4:		%{name}-no-client-cert.patch
+Patch0:		%{name}-configure.patch
+Patch1:		%{name}-krb5.patch
+Patch2:		%{name}-no-client-cert.patch
 BuildRequires:	rpm-perlprov >= 4.1-13
 %if %{with autodeps}
 BuildRequires:	perl-Crypt-SmbHash
@@ -48,22 +46,20 @@ hasłami.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
-%patch4 -p1
+
+%build
+%configure
+%{__make}
 
 %install
 rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT%{_sysconfdir}/smbldap-tools
+
 %{__make} install \
-	prefix=%{_prefix} \
-	sbindir=%{_sbindir} \
-	sysconfdir=%{_sysconfdir} \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -d $RPM_BUILD_ROOT%{perl_vendorlib}
-mv -f $RPM_BUILD_ROOT%{_sbindir}/%{_name}.pm $RPM_BUILD_ROOT%{perl_vendorlib}
-install configure.pl $RPM_BUILD_ROOT%{_sbindir}/smbldap-configure
-
-rm -f $RPM_BUILD_ROOT%{_sbindir}/*.{orig,spec}
+install -p smbldap.conf smbldap_bind.conf $RPM_BUILD_ROOT%{_sysconfdir}/smbldap-tools
+install -p smbldap-config.cmd $RPM_BUILD_ROOT%{_sbindir}/smbldap-config
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -71,7 +67,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc CONTRIBUTORS ChangeLog FILES INFRA README INSTALL TODO
-%doc doc/smb.conf smbldap.conf smbldap_bind.conf doc/smbldap* doc/migration_scripts/smbldap-migrate-*
+%doc doc/*.example doc/smbldap-tools.* doc/migration_scripts
 %dir %{_sysconfdir}/smbldap-tools
 %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap.conf
 %attr(600,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap_bind.conf

@@ -1,6 +1,5 @@
-diff -u smbldap-tools-0.9.1/configure.pl smbldap-tools-0.9.1.new/configure.pl
---- smbldap-tools-0.9.1/configure.pl	2006-03-01 15:54:49.000000000 +0200
-+++ smbldap-tools-0.9.1.new/configure.pl	2006-03-01 16:49:31.000000000 +0200
+--- smbldap-tools-0.9.7/smbldap-config.pl	2006-03-01 15:54:49.000000000 +0200
++++ smbldap-tools-0.9.7.new/smbldap-config.pl	2006-03-01 16:49:31.000000000 +0200
 @@ -211,7 +211,7 @@
  my $logonpath=read_entry("  logon path (press the \".\" character if you don't want roaming profile)","logonpath","\\\\$netbios_name\\profiles\\\%U",0);
  #$logonpath=~s/\\/\\\\/g;
@@ -25,30 +24,3 @@ diff -u smbldap-tools-0.9.1/configure.pl smbldap-tools-0.9.1.new/configure.pl
  $ldap_machine_suffix=~s/ou=//;
  my $ldap_idmap_suffix=read_entry(". Idmap suffix","ldapidmapsuffix","ou=Idmap",0);
  print ". sambaUnixIdPooldn: object where you want to store the next uidNumber\n";
-@@ -243,7 +243,7 @@
- }
- $server=~s/\///;
- my $ldapmasterserver;
--print ". ldap master server: IP adress or DNS name of the master (writable) ldap server\n";
-+print ". ldap master server: IP address or DNS name of the master (writable) ldap server\n";
- $ldapmasterserver=read_entry("  ldap master server","",$server,0);
- my $ldapmasterport;
- if (defined $config{ldapport}) {
-@@ -258,7 +258,7 @@
- system "stty echo";
- 
- # parameters for the slave ldap server
--print ". ldap slave server: IP adress or DNS name of the slave ldap server: can also be the master one\n";
-+print ". ldap slave server: IP address or DNS name of the slave ldap server: can also be the master one\n";
- my $ldap_slave_server=read_entry("  ldap slave server","","$server",0);
- my $ldap_slave_port;
- if (defined $config{ldapport}) {
-@@ -308,7 +308,7 @@
- 
- my $skeletonDir=read_entry(". default skeleton directory","","/etc/skel",0);
- 
--my $mailDomain=read_entry(". default domain name to append to mail adress", "","",0);
-+my $mailDomain=read_entry(". default domain name to append to mail address", "","",0);
- 
- print "-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=-=\n";
- my $template_smbldap="

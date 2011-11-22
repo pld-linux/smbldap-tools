@@ -1,6 +1,6 @@
-diff -ur smbldap-tools-0.9.6/smbldap_tools.pm y/smbldap_tools.pm
---- smbldap-tools-0.9.6/smbldap_tools.pm	2009-06-24 13:47:32.302630165 +0200
-+++ y/smbldap_tools.pm	2009-06-25 11:46:51.000000000 +0200
+diff -ur smbldap-tools-0.9.6/smbldap_tools.pl y/smbldap_tools.pl
+--- smbldap-tools-0.9.6/smbldap_tools.pl	2009-06-24 13:47:32.302630165 +0200
++++ y/smbldap_tools.pl	2009-06-25 11:46:51.000000000 +0200
 @@ -331,12 +331,19 @@
            "erreur LDAP: Can't contact master ldap server for writing ($@)";
      }
@@ -27,3 +27,55 @@ diff -ur smbldap-tools-0.9.6/smbldap_tools.pm y/smbldap_tools.pm
          if ( $mesg->code ) {
              die( "Could not start_tls: " . $mesg->error );
          }
+@@ -411,12 +411,19 @@
+         $config{slavePw} = $config{masterPw};
+     }
+     elsif ( $config{ldapTLS} == 1 ) {
+-        $mesg = $ldap_slave->start_tls(
+-            verify     => "$config{verify}",
+-            clientcert => "$config{clientcert}",
+-            clientkey  => "$config{clientkey}",
+-            cafile     => "$config{cafile}"
+-        );
++        if ( defined($config{clientcert}) && defined($config{clientkey}) ) {
++            $mesg = $ldap_slave->start_tls(
++                verify     => "$config{verify}",
++                clientcert => "$config{clientcert}",
++                clientkey  => "$config{clientkey}",
++                cafile     => "$config{cafile}"
++            );
++        } else {
++            $mesg = $ldap_slave->start_tls(
++                verify     => "$config{verify}",
++                cafile     => "$config{cafile}"
++            );
++        }
+         if ( $mesg->code ) {
+             die( "Could not start_tls: " . $mesg->error );
+         }
+@@ -578,12 +585,19 @@
+     }
+     if ($userLdap) {
+         if ( $config{ldapTLS} == 1 ) {
+-            $userLdap->start_tls(
+-                verify     => "$config{verify}",
+-                clientcert => "$config{clientcert}",
+-                clientkey  => "$config{clientkey}",
+-                cafile     => "$config{cafile}"
+-            );
++            if ( defined($config{clientcert}) && defined($config{clientkey}) ) {
++                $mesg = $userLdap->start_tls(
++                    verify     => "$config{verify}",
++                    clientcert => "$config{clientcert}",
++                    clientkey  => "$config{clientkey}",
++                    cafile     => "$config{cafile}"
++                );
++            } else {
++                $mesg = $userLdap->start_tls(
++                    verify     => "$config{verify}",
++                    cafile     => "$config{cafile}"
++                );
++            }
+         }
+         my $mesg = $userLdap->bind( dn => $dn, password => $pass );
+         if ( $mesg->code eq 0 ) {

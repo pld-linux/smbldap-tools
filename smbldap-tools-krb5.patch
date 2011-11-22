@@ -16,12 +16,12 @@ diff -ur smbldap-tools-0.9.6/smbldap.conf smbldap-tools-0.9.6-krb5/smbldap.conf
  # SMBLDAP-TOOLS Configuration (default are ok for a RedHat)
  #
  ##############################################################################
-diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-useradd
---- smbldap-tools-0.9.6/smbldap-useradd	2009-06-22 16:19:38.853899020 +0200
-+++ smbldap-tools-0.9.6-krb5/smbldap-useradd	2009-06-22 16:37:34.637118213 +0200
-@@ -384,6 +384,12 @@
- # add posix account first
- my $add;
+diff -ur smbldap-tools-0.9.6/smbldap-useradd.pl smbldap-tools-0.9.6-krb5/smbldap-useradd.pl
+--- smbldap-tools-0.9.6/smbldap-useradd.pl	2009-06-22 16:19:38.853899020 +0200
++++ smbldap-tools-0.9.6-krb5/smbldap-useradd.pl	2009-06-22 16:37:34.637118213 +0200
+@@ -405,6 +405,13 @@
+     exit 0;
+ }
  
 +my $userPass;
 +if ( $config{hash_encrypt} eq "K5KEY" ) {
@@ -29,27 +29,19 @@ diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-us
 +} else {
 +	$userPass = "{crypt}x";
 +}
- # if AIX account, inetOrgPerson obectclass can't be used
- if ( defined( $Options{'b'} ) ) {
-     $add = $ldap_master->add(
-@@ -402,7 +408,7 @@
-             'homeDirectory' => "$userHomeDirectory",
-             'loginShell'    => "$config{userLoginShell}",
-             'gecos'         => "$config{userGecos}",
--            'userPassword'  => "{crypt}x"
-+            'userPassword'  => "$userPass"
-         ]
-     );
- }
-@@ -424,7 +430,7 @@
-             'homeDirectory' => "$userHomeDirectory",
-             'loginShell'    => "$config{userLoginShell}",
-             'gecos'         => "$config{userGecos}",
--            'userPassword'  => "{crypt}x"
-+            'userPassword'  => "$userPass"
-         ]
-     );
- }
++
+ # USER ACCOUNT
+ # add posix account first
+ my @objectclass = qw(top person organizationalPerson posixAccount);
+@@ -418,7 +425,7 @@
+     'homeDirectory' => $userHomeDirectory,
+     'loginShell'    => $config{userLoginShell},
+     'gecos'         => $config{userGecos},
+-    'userPassword'  => "{crypt}x"
++    'userPassword'  => "$userPass"
+ );
+ 
+ push(@objectclass, 'shadowAccount') if ($config{shadowAccount});
 @@ -547,21 +547,47 @@
              $valacctflags = "$tmp";
          }
@@ -113,8 +105,8 @@ diff -ur smbldap-tools-0.9.6/smbldap-useradd smbldap-tools-0.9.6-krb5/smbldap-us
  
          $modify->code && die "failed to add entry: ", $modify->error;
  
---- smbldap-tools-0.9.6/smbldap-passwd.orig	2009-06-25 22:40:05.764901892 +0200
-+++ smbldap-tools-0.9.6/smbldap-passwd	2009-06-25 22:49:03.906899121 +0200
+--- smbldap-tools-0.9.6/smbldap-passwd.pl.orig	2009-06-25 22:40:05.764901892 +0200
++++ smbldap-tools-0.9.6/smbldap-passwd.pl	2009-06-25 22:49:03.906899121 +0200
 @@ -77,6 +77,10 @@
      }
  }
