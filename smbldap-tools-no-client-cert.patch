@@ -64,14 +64,14 @@ diff -ur smbldap-tools-0.9.6/smbldap_tools.pl y/smbldap_tools.pl
 -                cafile     => "$config{cafile}"
 -            );
 +            if ( defined($config{clientcert}) && defined($config{clientkey}) ) {
-+                $mesg = $userLdap->start_tls(
++                $userLdap->start_tls(
 +                    verify     => "$config{verify}",
 +                    clientcert => "$config{clientcert}",
 +                    clientkey  => "$config{clientkey}",
 +                    cafile     => "$config{cafile}"
 +                );
 +            } else {
-+                $mesg = $userLdap->start_tls(
++                $userLdap->start_tls(
 +                    verify     => "$config{verify}",
 +                    cafile     => "$config{cafile}"
 +                );
