@@ -111,7 +111,7 @@ diff -ur smbldap-tools-0.9.6/smbldap-useradd.pl smbldap-tools-0.9.6-krb5/smbldap
      }
  }
  
-+if ($config{hash_encrypt} eq "K5KEY" )) {
++if ($config{hash_encrypt} eq "K5KEY" ) {
 +    die "Refusing to mess with Kerberos passwords/keys,\nuse smbpasswd, kpasswd or pam passwd\n";
 +}
 +
