@@ -1,8 +1,7 @@
 #
 # Conditional build:
-%bcond_without	autodeps	# don't BR packages needed only for resolving deps
-#
-%define		_name	smbldap_tools
+%bcond_with	autodeps	# don't BR packages needed only for resolving deps
+
 %include	/usr/lib/rpm/macros.perl
 Summary:	User & Group administration tools for Samba-OpenLDAP
 Summary(pl.UTF-8):	Narzędzia do administracji użytkownikami i grupami dla Samby i OpenLDAP
@@ -54,11 +53,10 @@ hasłami.
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/smbldap-tools
-
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-install -p smbldap.conf smbldap_bind.conf $RPM_BUILD_ROOT%{_sysconfdir}/smbldap-tools
+cp -p smbldap.conf smbldap_bind.conf $RPM_BUILD_ROOT%{_sysconfdir}/smbldap-tools
 install -p smbldap-config.cmd $RPM_BUILD_ROOT%{_sbindir}/smbldap-config
 
 %clean
@@ -71,5 +69,18 @@ rm -rf $RPM_BUILD_ROOT
 %dir %{_sysconfdir}/smbldap-tools
 %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap.conf
 %attr(600,root,root) %verify(not md5 mtime size) %config(noreplace) %{_sysconfdir}/smbldap-tools/smbldap_bind.conf
-%attr(755,root,root) %{_sbindir}/*
-%{perl_vendorlib}/%{_name}.pm
+%attr(755,root,root) %{_sbindir}/smbldap-config
+%attr(755,root,root) %{_sbindir}/smbldap-groupadd
+%attr(755,root,root) %{_sbindir}/smbldap-groupdel
+%attr(755,root,root) %{_sbindir}/smbldap-grouplist
+%attr(755,root,root) %{_sbindir}/smbldap-groupmod
+%attr(755,root,root) %{_sbindir}/smbldap-groupshow
+%attr(755,root,root) %{_sbindir}/smbldap-passwd
+%attr(755,root,root) %{_sbindir}/smbldap-populate
+%attr(755,root,root) %{_sbindir}/smbldap-useradd
+%attr(755,root,root) %{_sbindir}/smbldap-userdel
+%attr(755,root,root) %{_sbindir}/smbldap-userinfo
+%attr(755,root,root) %{_sbindir}/smbldap-userlist
+%attr(755,root,root) %{_sbindir}/smbldap-usermod
+%attr(755,root,root) %{_sbindir}/smbldap-usershow
+%{perl_vendorlib}/smbldap_tools.pm
