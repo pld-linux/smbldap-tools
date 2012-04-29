@@ -58,9 +58,15 @@ install -d $RPM_BUILD_ROOT%{_sysconfdir}/smbldap-tools
 
 cp -p smbldap.conf smbldap_bind.conf $RPM_BUILD_ROOT%{_sysconfdir}/smbldap-tools
 install -p smbldap-config.cmd $RPM_BUILD_ROOT%{_sbindir}/smbldap-config
+install -p smbldap-upgrade-0.9.6.cmd $RPM_BUILD_ROOT%{_sbindir}/smbldap-upgrade-0.9.6.pl
 
 %clean
 rm -rf $RPM_BUILD_ROOT
+
+%triggerpostun -- %{name} < 0.9.7-0
+if [ "$1" -eq "2" ]; then ## Upgrade
+	%{_sbindir}/smbldap-upgrade-0.9.6.pl || :
+fi
 
 %files
 %defattr(644,root,root,755)
@@ -83,4 +89,5 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) %{_sbindir}/smbldap-userlist
 %attr(755,root,root) %{_sbindir}/smbldap-usermod
 %attr(755,root,root) %{_sbindir}/smbldap-usershow
+%attr(755,root,root) %{_sbindir}/smbldap-upgrade-0.9.6.pl
 %{perl_vendorlib}/smbldap_tools.pm
