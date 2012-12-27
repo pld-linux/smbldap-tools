@@ -1,81 +1,28 @@
-diff -ur smbldap-tools-0.9.6/smbldap_tools.pl y/smbldap_tools.pl
---- smbldap-tools-0.9.6/smbldap_tools.pl	2009-06-24 13:47:32.302630165 +0200
-+++ y/smbldap_tools.pl	2009-06-25 11:46:51.000000000 +0200
-@@ -331,12 +331,19 @@
-           "erreur LDAP: Can't contact master ldap server for writing ($@)";
+--- smbldap-tools-0.9.9/smbldap_tools.pl~	2012-08-07 13:12:06.000000000 +0200
++++ smbldap-tools-0.9.9/smbldap_tools.pl	2012-12-27 15:29:06.544322290 +0100
+@@ -359,12 +359,19 @@
      }
-     if ( $config{ldapTLS} == 1 ) {
--        $mesg = $ldap_master->start_tls(
--            verify     => "$config{verify}",
--            clientcert => "$config{clientcert}",
--            clientkey  => "$config{clientkey}",
--            cafile     => "$config{cafile}"
+ 
+     if ($tls) {
+-        my $mesg = $ldap->start_tls(
+-            verify     => $config{verify},
+-            clientcert => $config{clientcert},
+-            clientkey  => $config{clientkey},
+-            cafile     => $config{cafile},
 -        );
-+        if ( defined($config{clientcert}) && defined($config{clientkey}) ) {
-+            $mesg = $ldap_master->start_tls(
-+                verify     => "$config{verify}",
-+                clientcert => "$config{clientcert}",
-+                clientkey  => "$config{clientkey}",
-+                cafile     => "$config{cafile}"
-+            );
-+        } else {
-+            $mesg = $ldap_master->start_tls(
-+                verify     => "$config{verify}",
-+                cafile     => "$config{cafile}"
-+            );
-+        }
-         if ( $mesg->code ) {
-             die( "Could not start_tls: " . $mesg->error );
-         }
-@@ -411,12 +411,19 @@
-         $config{slavePw} = $config{masterPw};
-     }
-     elsif ( $config{ldapTLS} == 1 ) {
--        $mesg = $ldap_slave->start_tls(
--            verify     => "$config{verify}",
--            clientcert => "$config{clientcert}",
--            clientkey  => "$config{clientkey}",
--            cafile     => "$config{cafile}"
--        );
-+        if ( defined($config{clientcert}) && defined($config{clientkey}) ) {
-+            $mesg = $ldap_slave->start_tls(
-+                verify     => "$config{verify}",
-+                clientcert => "$config{clientcert}",
-+                clientkey  => "$config{clientkey}",
-+                cafile     => "$config{cafile}"
-+            );
-+        } else {
-+            $mesg = $ldap_slave->start_tls(
-+                verify     => "$config{verify}",
-+                cafile     => "$config{cafile}"
-+            );
-+        }
-         if ( $mesg->code ) {
-             die( "Could not start_tls: " . $mesg->error );
-         }
-@@ -578,12 +585,19 @@
-     }
-     if ($userLdap) {
-         if ( $config{ldapTLS} == 1 ) {
--            $userLdap->start_tls(
--                verify     => "$config{verify}",
--                clientcert => "$config{clientcert}",
--                clientkey  => "$config{clientkey}",
--                cafile     => "$config{cafile}"
--            );
-+            if ( defined($config{clientcert}) && defined($config{clientkey}) ) {
-+                $userLdap->start_tls(
-+                    verify     => "$config{verify}",
-+                    clientcert => "$config{clientcert}",
-+                    clientkey  => "$config{clientkey}",
-+                    cafile     => "$config{cafile}"
-+                );
-+            } else {
-+                $userLdap->start_tls(
-+                    verify     => "$config{verify}",
-+                    cafile     => "$config{cafile}"
-+                );
-+            }
-         }
-         my $mesg = $userLdap->bind( dn => $dn, password => $pass );
-         if ( $mesg->code eq 0 ) {
++	    if ( defined($config{clientcert}) && defined($config{clientkey}) ) {
++		    my $mesg = $ldap->start_tls(
++			    verify     => $config{verify},
++			    clientcert => $config{clientcert},
++			    clientkey  => $config{clientkey},
++			    cafile     => $config{cafile},
++		    );
++	    } else {
++		    my $mesg = $ldap->start_tls(
++			    verify     => $config{verify},
++			    cafile     => $config{cafile},
++		    );
++	    }
+         if ($mesg->code) {
+ 	    $ldap->disconnect;
+ 	    die( "Cannot start TLS on LDAP connection: $uri: " . $mesg->error . "\n");
