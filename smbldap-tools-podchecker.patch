@@ -1,0 +1,15 @@
+--- smbldap-tools-0.9.10/Makefile.in~	2013-02-13 07:01:45.000000000 +0100
++++ smbldap-tools-0.9.10/Makefile.in	2013-08-04 20:15:43.115202252 +0200
+@@ -63,8 +63,10 @@
+ 
+ .cmd.$(PERL_MAN_SECTION):
+ 	@echo "Building $@ from $< ..."
+-	@$(POD2MAN_COMMAND) --section=$(PERL_MAN_SECTION) $< >$@.tmp
+-	@mv $@.tmp $@
++	@if podchecker $< ; then \
++		$(POD2MAN_COMMAND) --section=$(PERL_MAN_SECTION) $< >$@.tmp ; \
++		mv $@.tmp $@ ; \
++	fi
+ 
+ ## ======================================================================
+ 

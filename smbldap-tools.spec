@@ -6,16 +6,18 @@
 Summary:	User & Group administration tools for Samba-OpenLDAP
 Summary(pl.UTF-8):	Narzędzia do administracji użytkownikami i grupami dla Samby i OpenLDAP
 Name:		smbldap-tools
-Version:	0.9.9
+Version:	0.9.10
 Release:	1
 License:	GPL
 Group:		Applications/Networking
-Source0:	http://download.gna.org/smbldap-tools/sources/0.9.9/%{name}-%{version}.tar.gz
-# Source0-md5:	5084011003239a60ebe209c5fb570397
+Source0:	http://download.gna.org/smbldap-tools/sources/%{version}/%{name}-%{version}.tar.gz
+# Source0-md5:	f52a626637c468d66a4e71f30c174873
 URL:		https://gna.org/projects/smbldap-tools/
 Patch0:		%{name}-configure.patch
 Patch1:		%{name}-krb5.patch
 Patch2:		%{name}-no-client-cert.patch
+Patch3:		%{name}-podchecker.patch
+BuildRequires:	perl-tools-pod
 BuildRequires:	rpm-perlprov >= 4.1-13
 %if %{with autodeps}
 BuildRequires:	perl-Crypt-SmbHash
@@ -45,6 +47,7 @@ hasłami.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %configure
