@@ -2,7 +2,6 @@
 # Conditional build:
 %bcond_with	autodeps	# don't BR packages needed only for resolving deps
 
-%include	/usr/lib/rpm/macros.perl
 Summary:	User & Group administration tools for Samba-OpenLDAP
 Summary(pl.UTF-8):	Narzędzia do administracji użytkownikami i grupami dla Samby i OpenLDAP
 Name:		smbldap-tools
